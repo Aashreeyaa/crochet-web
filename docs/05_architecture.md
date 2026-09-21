@@ -1,4 +1,4 @@
-# Architecture – Crochet Stitch Shop
+# Architecture – The Cozy Knot
 
 ## Application Factory Pattern
 `backend/app.py` → `create_app()` registers extensions and blueprints.  

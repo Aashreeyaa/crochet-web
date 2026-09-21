@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Create tables and seed demo data for Crochet Stitch Shop."""
+"""Create tables and seed demo data for The Cozy Knot."""
 import sys
 from pathlib import Path
 
@@ -19,10 +19,10 @@ def seed():
         db.drop_all()
         db.create_all()
 
-        admin = User(email="admin@stitchshop.com", full_name="Admin Weaver", role="admin")
+        admin = User(email="admin@The Cozy Knot.com", full_name="Admin Weaver", role="admin")
         admin.set_password("admin123")
         customer = User(
-            email="customer@stitchshop.com",
+            email="customer@The Cozy Knot.com",
             full_name="Maya Customer",
             role="customer",
             phone="9800000000",

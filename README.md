@@ -1,4 +1,4 @@
-# Crochet Stitch Shop 🧶
+# The Cozy Knot 🧶
 
 Full-stack **crochet e-commerce** web application built with **Flask**, mapped 1:1 to the provided **Use Case Diagram**.
 
@@ -71,8 +71,8 @@ Open **http://127.0.0.1:5000**
 
 | Role     | Email                     | Password  |
 |----------|---------------------------|-----------|
-| Admin    | admin@stitchshop.com      | admin123  |
-| Customer | customer@stitchshop.com   | cust123   |
+| Admin    | admin@The Cozy Knot.com      | admin123  |
+| Customer | customer@The Cozy Knot.com   | cust123   |
 
 ## Design Notes (vs Sneaky Point reference)
 

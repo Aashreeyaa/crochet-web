@@ -1,4 +1,4 @@
-# Database Schema – Crochet Stitch Shop
+# Database Schema – The Cozy Knot
 
 ## ER Overview
 

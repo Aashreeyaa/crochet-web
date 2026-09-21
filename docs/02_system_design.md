@@ -1,4 +1,4 @@
-# System Design – Crochet Stitch Shop
+# System Design – The Cozy Knot
 
 ## High-Level Architecture
 

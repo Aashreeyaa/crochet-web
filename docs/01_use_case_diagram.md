@@ -1,4 +1,4 @@
-# Use Case Diagram – Crochet Stitch Shop
+# Use Case Diagram – The Cozy Knot
 
 ## System Boundary
 **Crochet Website / App**

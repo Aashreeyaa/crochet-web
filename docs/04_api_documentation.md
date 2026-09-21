@@ -1,4 +1,4 @@
-# API / Route Documentation – Crochet Stitch Shop
+# API / Route Documentation – The Cozy Knot
 
 This project is primarily **server-rendered** (Jinja2). Routes below act as the application API surface.
 
