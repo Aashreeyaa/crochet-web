@@ -27,5 +27,5 @@ PYTHONPATH=. python backend/run.py
 | DATABASE_URL   | SQLAlchemy connection    |
 
 ## Demo credentials (change after first login)
-- admin@The Cozy Knot.com / admin123
-- customer@The Cozy Knot.com / cust123
+- admin@stitchshop.com / admin123
+- customer@stitchshop.com / cust123

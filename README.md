@@ -71,8 +71,8 @@ Open **http://127.0.0.1:5000**
 
 | Role     | Email                     | Password  |
 |----------|---------------------------|-----------|
-| Admin    | admin@The Cozy Knot.com      | admin123  |
-| Customer | customer@The Cozy Knot.com   | cust123   |
+| Admin    | admin@stitchshop.com      | admin123  |
+| Customer | customer@stitchshop.com   | cust123   |
 
 ## Design Notes (vs Sneaky Point reference)
 
