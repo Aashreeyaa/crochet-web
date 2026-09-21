@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Sign in – StitchShop{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-5">
+      <div class="card border-0 shadow-sm" style="border-radius:var(--cs-radius);">
+        <div class="card-body p-4 p-md-5">
+          <h2 class="section-title mb-1">Welcome back</h2>
+          <p class="text-muted mb-4">Sign in to your StitchShop account</p>
+          <form method="post" novalidate>
+            {{ form.hidden_tag() }}
+            <div class="mb-3">
+              {{ form.email.label(class="form-label") }}
+              {{ form.email(class="form-control", placeholder="you@email.com") }}
+              {% for e in form.email.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+            </div>
+            <div class="mb-4">
+              {{ form.password.label(class="form-label") }}
+              {{ form.password(class="form-control", placeholder="••••••••") }}
+              {% for e in form.password.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+            </div>
+            {{ form.submit(class="btn btn-cs w-100") }}
+          </form>
+          <p class="text-center mt-4 mb-0 text-muted small">
+            New here? <a href="{{ url_for('auth.register') }}" class="fw-semibold" style="color:var(--cs-primary);">Create an account</a>
+          </p>
+        </div>
+      </div>
+      <div class="text-center mt-3 small text-muted">
+        Demo: admin@stitchshop.com / admin123 · customer@stitchshop.com / cust123
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,98 @@
+{% extends "base.html" %}
+{% block title %}Crochet Stitch Shop – Handmade with Love{% endblock %}
+
+{% block content %}
+<section class="hero">
+  <div class="container">
+    <div class="row align-items-center g-4">
+      <div class="col-lg-6">
+        <h1 class="hero-title">Soft stitches.<br><span>Warm homes.</span></h1>
+        <p class="hero-sub">Discover unique handmade crochet — blankets, amigurumi, accessories and more. Crafted with care, delivered with love.</p>
+        <div class="d-flex flex-wrap gap-2 mt-4">
+          <a href="{{ url_for('products.list_products') }}" class="btn btn-cs">Browse collection</a>
+          <a href="{{ url_for('main.about') }}" class="btn btn-cs-outline">Our story</a>
+        </div>
+      </div>
+      <div class="col-lg-6 text-center">
+        <div class="hero-art mx-auto">🧶</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+{% if categories %}
+<section class="pb-4">
+  <div class="container">
+    <div class="d-flex flex-wrap gap-2 justify-content-center">
+      {% for c in categories %}
+        <a href="{{ url_for('products.list_products', category=c.slug) }}" class="cat-pill">
+          {{ c.icon }} {{ c.name }}
+        </a>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if featured %}
+<section class="py-4">
+  <div class="container">
+    <h2 class="section-title">Featured pieces</h2>
+    <p class="section-sub">Hand-picked favourites from the studio</p>
+    <div class="row g-4">
+      {% for p in featured %}
+      <div class="col-6 col-md-4 col-lg-3">
+        <a href="{{ url_for('products.detail', slug=p.slug) }}" class="product-card text-decoration-none">
+          <div class="img-wrap">
+            {% if p.is_featured %}<span class="badge-featured">Featured</span>{% endif %}
+            {% if p.image and p.image != 'placeholder.jpg' %}
+              <img src="{{ url_for('static', filename='images/products/' + p.image) }}" alt="{{ p.name }}">
+            {% else %}
+              <span class="placeholder-emoji">{{ p.category.icon if p.category else '🧶' }}</span>
+            {% endif %}
+          </div>
+          <div class="body">
+            <div class="cat">{{ p.category.name if p.category else 'Crochet' }}</div>
+            <div class="name">{{ p.name }}</div>
+            <div class="price">Rs {{ '%.0f'|format(p.price) }}</div>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+  </div>
+</section>
+{% endif %}
+
+{% if latest %}
+<section class="py-5">
+  <div class="container">
+    <h2 class="section-title">Just finished</h2>
+    <p class="section-sub">Fresh from the hook</p>
+    <div class="row g-4">
+      {% for p in latest %}
+      <div class="col-6 col-md-4 col-lg-3">
+        <a href="{{ url_for('products.detail', slug=p.slug) }}" class="product-card text-decoration-none">
+          <div class="img-wrap">
+            {% if p.image and p.image != 'placeholder.jpg' %}
+              <img src="{{ url_for('static', filename='images/products/' + p.image) }}" alt="{{ p.name }}">
+            {% else %}
+              <span class="placeholder-emoji">{{ p.category.icon if p.category else '🧶' }}</span>
+            {% endif %}
+          </div>
+          <div class="body">
+            <div class="cat">{{ p.category.name if p.category else 'Crochet' }}</div>
+            <div class="name">{{ p.name }}</div>
+            <div class="price">Rs {{ '%.0f'|format(p.price) }}</div>
+          </div>
+        </a>
+      </div>
+      {% endfor %}
+    </div>
+    <div class="text-center mt-4">
+      <a href="{{ url_for('products.list_products') }}" class="btn btn-cs-outline">View all products</a>
+    </div>
+  </div>
+</section>
+{% endif %}
+{% endblock %}

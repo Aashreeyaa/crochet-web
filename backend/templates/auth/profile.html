@@ -1,0 +1,35 @@
+{% extends "base.html" %}
+{% block title %}Profile – StitchShop{% endblock %}
+{% block content %}
+<div class="container py-5">
+  <div class="row justify-content-center">
+    <div class="col-md-6">
+      <h2 class="section-title mb-4">Your profile</h2>
+      <div class="card border-0 shadow-sm" style="border-radius:var(--cs-radius);">
+        <div class="card-body p-4">
+          <form method="post">
+            {{ form.hidden_tag() }}
+            <div class="mb-3">
+              {{ form.full_name.label(class="form-label") }}
+              {{ form.full_name(class="form-control") }}
+            </div>
+            <div class="mb-3">
+              <label class="form-label">Email</label>
+              <input type="text" class="form-control" value="{{ current_user.email }}" disabled>
+            </div>
+            <div class="mb-3">
+              {{ form.phone.label(class="form-label") }}
+              {{ form.phone(class="form-control") }}
+            </div>
+            <div class="mb-4">
+              {{ form.address.label(class="form-label") }}
+              {{ form.address(class="form-control", rows=3) }}
+            </div>
+            {{ form.submit(class="btn btn-cs") }}
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

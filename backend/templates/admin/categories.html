@@ -1,0 +1,39 @@
+{% extends "base.html" %}
+{% block title %}Categories{% endblock %}
+{% block content %}
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-lg-2">{% include "admin/_sidebar.html" %}</div>
+    <div class="col-lg-10">
+      <h1 class="section-title mb-4">Categories</h1>
+      <div class="row g-4">
+        <div class="col-md-5">
+          <div class="card border-0 shadow-sm" style="border-radius:var(--cs-radius);">
+            <div class="card-body p-4">
+              <h5 class="fw-bold mb-3">Add category</h5>
+              <form method="post">
+                {{ form.hidden_tag() }}
+                <div class="mb-3">{{ form.name.label(class="form-label") }}{{ form.name(class="form-control") }}</div>
+                <div class="mb-3">{{ form.icon.label(class="form-label") }}{{ form.icon(class="form-control") }}</div>
+                <div class="mb-3">{{ form.description.label(class="form-label") }}{{ form.description(class="form-control", rows=2) }}</div>
+                {{ form.submit(class="btn btn-cs") }}
+              </form>
+            </div>
+          </div>
+        </div>
+        <div class="col-md-7">
+          <div class="list-group shadow-sm" style="border-radius:var(--cs-radius);overflow:hidden;">
+            {% for c in categories %}
+            <div class="list-group-item d-flex justify-content-between align-items-center">
+              <span>{{ c.icon }} <strong>{{ c.name }}</strong> <span class="text-muted small">({{ c.products.count() }} products)</span></span>
+            </div>
+            {% else %}
+            <div class="list-group-item text-muted">No categories yet</div>
+            {% endfor %}
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

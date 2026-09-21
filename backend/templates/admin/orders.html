@@ -1,0 +1,38 @@
+{% extends "base.html" %}
+{% block title %}Manage Orders{% endblock %}
+{% block content %}
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-lg-2">{% include "admin/_sidebar.html" %}</div>
+    <div class="col-lg-10">
+      <h1 class="section-title mb-3">Orders</h1>
+      <div class="d-flex flex-wrap gap-2 mb-4">
+        <a href="{{ url_for('admin.orders') }}" class="cat-pill {% if not current_status %}active{% endif %}">All</a>
+        {% for s in ['pending','paid','processing','shipped','delivered','cancelled'] %}
+          <a href="{{ url_for('admin.orders', status=s) }}" class="cat-pill {% if current_status == s %}active{% endif %}">{{ s }}</a>
+        {% endfor %}
+      </div>
+      <div class="table-responsive">
+        <table class="table align-middle">
+          <thead><tr><th>Order</th><th>Customer</th><th>Total</th><th>Status</th><th>Payment</th><th>Date</th><th></th></tr></thead>
+          <tbody>
+            {% for o in orders %}
+            <tr>
+              <td class="fw-semibold">{{ o.order_number }}</td>
+              <td>{{ o.customer.full_name if o.customer else '—' }}</td>
+              <td>Rs {{ '%.0f'|format(o.total) }}</td>
+              <td><span class="status-pill status-{{ o.status }}">{{ o.status }}</span></td>
+              <td><span class="status-pill status-{{ o.payment_status }}">{{ o.payment_status }}</span></td>
+              <td>{{ o.created_at.strftime('%d %b %Y') }}</td>
+              <td><a href="{{ url_for('admin.order_detail', oid=o.id) }}" class="btn btn-cs-ghost btn-sm">Manage</a></td>
+            </tr>
+            {% else %}
+            <tr><td colspan="7" class="text-muted">No orders</td></tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

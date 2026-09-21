@@ -1,0 +1,40 @@
+{% extends "base.html" %}
+{% block title %}My Orders – StitchShop{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <h1 class="section-title mb-4">My orders</h1>
+  {% if orders %}
+  <div class="table-responsive">
+    <table class="table align-middle">
+      <thead>
+        <tr>
+          <th>Order</th>
+          <th>Date</th>
+          <th>Total</th>
+          <th>Status</th>
+          <th>Payment</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for o in orders %}
+        <tr>
+          <td class="fw-semibold">{{ o.order_number }}</td>
+          <td>{{ o.created_at.strftime('%d %b %Y') }}</td>
+          <td>Rs {{ '%.0f'|format(o.total) }}</td>
+          <td><span class="status-pill status-{{ o.status }}">{{ o.status }}</span></td>
+          <td><span class="status-pill status-{{ o.payment_status }}">{{ o.payment_status }}</span></td>
+          <td><a href="{{ url_for('orders.detail', order_id=o.id) }}" class="btn btn-cs-ghost btn-sm">View</a></td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+  </div>
+  {% else %}
+  <div class="text-center py-5 text-muted">
+    <p>No orders yet.</p>
+    <a href="{{ url_for('products.list_products') }}" class="btn btn-cs">Start shopping</a>
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

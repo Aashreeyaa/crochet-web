@@ -1,0 +1,43 @@
+{% extends "base.html" %}
+{% block title %}Admin Dashboard{% endblock %}
+{% block content %}
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-lg-2">
+      {% include "admin/_sidebar.html" %}
+    </div>
+    <div class="col-lg-10">
+      <h1 class="section-title mb-4">Dashboard</h1>
+      <div class="row g-3 mb-4">
+        <div class="col-6 col-md-3"><div class="stat-card"><div class="num">{{ stats.products }}</div><div class="text-muted small">Products</div></div></div>
+        <div class="col-6 col-md-3"><div class="stat-card"><div class="num">{{ stats.orders }}</div><div class="text-muted small">Orders</div></div></div>
+        <div class="col-6 col-md-3"><div class="stat-card"><div class="num">{{ stats.customers }}</div><div class="text-muted small">Customers</div></div></div>
+        <div class="col-6 col-md-3"><div class="stat-card"><div class="num">Rs {{ '%.0f'|format(stats.revenue) }}</div><div class="text-muted small">Revenue</div></div></div>
+      </div>
+      <div class="card border-0 shadow-sm" style="border-radius:var(--cs-radius);">
+        <div class="card-body">
+          <h5 class="fw-bold mb-3">Recent orders</h5>
+          <div class="table-responsive">
+            <table class="table table-sm align-middle mb-0">
+              <thead><tr><th>Order</th><th>Customer</th><th>Total</th><th>Status</th><th></th></tr></thead>
+              <tbody>
+                {% for o in recent_orders %}
+                <tr>
+                  <td>{{ o.order_number }}</td>
+                  <td>{{ o.customer.full_name if o.customer else '—' }}</td>
+                  <td>Rs {{ '%.0f'|format(o.total) }}</td>
+                  <td><span class="status-pill status-{{ o.status }}">{{ o.status }}</span></td>
+                  <td><a href="{{ url_for('admin.order_detail', oid=o.id) }}" class="btn btn-cs-ghost btn-sm">View</a></td>
+                </tr>
+                {% else %}
+                <tr><td colspan="5" class="text-muted">No orders yet</td></tr>
+                {% endfor %}
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

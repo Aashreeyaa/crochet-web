@@ -1,0 +1,62 @@
+{% extends "base.html" %}
+{% block title %}Invoice {{ order.invoice_number or order.order_number }}{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <div class="invoice-box">
+    <div class="d-flex justify-content-between align-items-start mb-4">
+      <div>
+        <div class="cs-brand mb-1">
+          <span class="brand-mark" style="width:28px;height:28px;font-size:0.9rem;">🧶</span>
+          Stitch<span class="brand-accent">Shop</span>
+        </div>
+        <div class="small text-muted">Handmade crochet · Undergraduate project</div>
+      </div>
+      <div class="text-end">
+        <div class="fw-bold">INVOICE</div>
+        <div class="small">{{ order.invoice_number or order.order_number }}</div>
+        <div class="small text-muted">{{ order.paid_at.strftime('%d %b %Y') if order.paid_at else order.created_at.strftime('%d %b %Y') }}</div>
+      </div>
+    </div>
+    <div class="row mb-4">
+      <div class="col-6">
+        <div class="small text-muted">Bill to</div>
+        <div class="fw-semibold">{{ order.shipping_name }}</div>
+        <div class="small">{{ order.shipping_address }}</div>
+      </div>
+      <div class="col-6 text-end">
+        <div class="small text-muted">Order</div>
+        <div class="fw-semibold">{{ order.order_number }}</div>
+        <div class="small">Payment: {{ order.payment_method }}</div>
+      </div>
+    </div>
+    <table class="table">
+      <thead>
+        <tr>
+          <th>Item</th>
+          <th class="text-end">Qty</th>
+          <th class="text-end">Price</th>
+          <th class="text-end">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        {% for item in order.items %}
+        <tr>
+          <td>{{ item.product_name }}</td>
+          <td class="text-end">{{ item.quantity }}</td>
+          <td class="text-end">Rs {{ '%.0f'|format(item.unit_price) }}</td>
+          <td class="text-end">Rs {{ '%.0f'|format(item.line_total) }}</td>
+        </tr>
+        {% endfor %}
+      </tbody>
+    </table>
+    <div class="text-end">
+      <div>Subtotal: Rs {{ '%.0f'|format(order.subtotal) }}</div>
+      <div>Shipping: {% if order.shipping_fee == 0 %}Free{% else %}Rs {{ '%.0f'|format(order.shipping_fee) }}{% endif %}</div>
+      <div class="fw-bold fs-5 mt-1">Total: Rs {{ '%.0f'|format(order.total) }}</div>
+    </div>
+    <div class="text-center mt-4">
+      <button onclick="window.print()" class="btn btn-cs-outline btn-sm">Print invoice</button>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,87 @@
+{% extends "base.html" %}
+{% block title %}{{ product.name }} – StitchShop{% endblock %}
+{% block content %}
+<div class="container py-4">
+  <nav aria-label="breadcrumb" class="mb-3">
+    <ol class="breadcrumb">
+      <li class="breadcrumb-item"><a href="{{ url_for('products.list_products') }}">Shop</a></li>
+      {% if product.category %}
+        <li class="breadcrumb-item"><a href="{{ url_for('products.list_products', category=product.category.slug) }}">{{ product.category.name }}</a></li>
+      {% endif %}
+      <li class="breadcrumb-item active">{{ product.name }}</li>
+    </ol>
+  </nav>
+
+  <div class="row g-5">
+    <div class="col-md-6">
+      <div class="img-wrap rounded-4 overflow-hidden" style="aspect-ratio:1;background:var(--cs-cream);display:grid;place-items:center;">
+        {% if product.image and product.image != 'placeholder.jpg' %}
+          <img src="{{ url_for('static', filename='images/products/' + product.image) }}" alt="{{ product.name }}" class="w-100 h-100" style="object-fit:cover;">
+        {% else %}
+          <span style="font-size:6rem;">{{ product.category.icon if product.category else '🧶' }}</span>
+        {% endif %}
+      </div>
+    </div>
+    <div class="col-md-6">
+      <div class="cat mb-1" style="color:var(--cs-primary);font-weight:600;font-size:0.85rem;text-transform:uppercase;">
+        {{ product.category.name if product.category else 'Crochet' }}
+      </div>
+      <h1 class="section-title mb-2">{{ product.name }}</h1>
+      <div class="fs-3 fw-bold mb-3" style="color:var(--cs-primary-2);">Rs {{ '%.0f'|format(product.price) }}</div>
+
+      {% if product.description %}
+        <p class="text-muted mb-4">{{ product.description }}</p>
+      {% endif %}
+
+      <ul class="list-unstyled small mb-4">
+        {% if product.yarn_type %}<li><strong>Yarn:</strong> {{ product.yarn_type }}</li>{% endif %}
+        {% if product.size %}<li><strong>Size:</strong> {{ product.size }}</li>{% endif %}
+        {% if product.colors %}<li><strong>Colors:</strong> {{ product.colors }}</li>{% endif %}
+        <li><strong>Stock:</strong>
+          {% if product.stock > 0 %}
+            <span class="text-success">{{ product.stock }} available</span>
+          {% else %}
+            <span class="text-danger">Out of stock</span>
+          {% endif %}
+        </li>
+      </ul>
+
+      {% if current_user.is_authenticated and product.is_in_stock() %}
+        <form method="post" action="{{ url_for('cart.add', product_id=product.id) }}" class="d-flex flex-wrap gap-2 align-items-center">
+          <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+          <div class="input-group" style="width:140px;">
+            <button type="button" class="btn btn-outline-secondary" data-qty-step="#qty" data-delta="-1">−</button>
+            <input type="number" name="quantity" id="qty" value="1" min="1" max="{{ product.stock }}" class="form-control text-center">
+            <button type="button" class="btn btn-outline-secondary" data-qty-step="#qty" data-delta="1">+</button>
+          </div>
+          <button type="submit" class="btn btn-cs">Add to cart</button>
+        </form>
+      {% elif not current_user.is_authenticated %}
+        <a href="{{ url_for('auth.login', next=request.url) }}" class="btn btn-cs">Sign in to buy</a>
+      {% else %}
+        <button class="btn btn-secondary" disabled>Out of stock</button>
+      {% endif %}
+    </div>
+  </div>
+
+  {% if related %}
+  <hr class="my-5">
+  <h3 class="section-title">You may also like</h3>
+  <div class="row g-4 mt-1">
+    {% for p in related %}
+    <div class="col-6 col-md-3">
+      <a href="{{ url_for('products.detail', slug=p.slug) }}" class="product-card text-decoration-none">
+        <div class="img-wrap">
+          <span class="placeholder-emoji">{{ p.category.icon if p.category else '🧶' }}</span>
+        </div>
+        <div class="body">
+          <div class="name">{{ p.name }}</div>
+          <div class="price">Rs {{ '%.0f'|format(p.price) }}</div>
+        </div>
+      </a>
+    </div>
+    {% endfor %}
+  </div>
+  {% endif %}
+</div>
+{% endblock %}

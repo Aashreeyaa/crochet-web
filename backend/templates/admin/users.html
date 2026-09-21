@@ -1,0 +1,36 @@
+{% extends "base.html" %}
+{% block title %}Users{% endblock %}
+{% block content %}
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-lg-2">{% include "admin/_sidebar.html" %}</div>
+    <div class="col-lg-10">
+      <h1 class="section-title mb-4">Users</h1>
+      <div class="table-responsive">
+        <table class="table align-middle">
+          <thead><tr><th>Name</th><th>Email</th><th>Role</th><th>Active</th><th>Joined</th><th></th></tr></thead>
+          <tbody>
+            {% for u in users %}
+            <tr>
+              <td class="fw-semibold">{{ u.full_name }}</td>
+              <td>{{ u.email }}</td>
+              <td><span class="badge bg-secondary">{{ u.role }}</span></td>
+              <td>{% if u.is_active %}<span class="text-success">Yes</span>{% else %}<span class="text-danger">No</span>{% endif %}</td>
+              <td>{{ u.created_at.strftime('%d %b %Y') }}</td>
+              <td>
+                {% if u.id != current_user.id %}
+                <form method="post" action="{{ url_for('admin.user_toggle', uid=u.id) }}" class="d-inline">
+                  <input type="hidden" name="csrf_token" value="{{ csrf_token() }}">
+                  <button class="btn btn-cs-ghost btn-sm">{{ 'Deactivate' if u.is_active else 'Activate' }}</button>
+                </form>
+                {% endif %}
+              </td>
+            </tr>
+            {% endfor %}
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

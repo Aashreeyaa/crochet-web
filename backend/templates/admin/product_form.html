@@ -1,0 +1,67 @@
+{% extends "base.html" %}
+{% block title %}{{ title }}{% endblock %}
+{% block content %}
+<div class="container-fluid py-4">
+  <div class="row">
+    <div class="col-lg-2">{% include "admin/_sidebar.html" %}</div>
+    <div class="col-lg-8">
+      <h1 class="section-title mb-4">{{ title }}</h1>
+      <div class="card border-0 shadow-sm" style="border-radius:var(--cs-radius);">
+        <div class="card-body p-4">
+          <form method="post">
+            {{ form.hidden_tag() }}
+            <div class="row g-3">
+              <div class="col-md-8">
+                {{ form.name.label(class="form-label") }}
+                {{ form.name(class="form-control") }}
+              </div>
+              <div class="col-md-4">
+                {{ form.category_id.label(class="form-label") }}
+                {{ form.category_id(class="form-select") }}
+              </div>
+              <div class="col-12">
+                {{ form.description.label(class="form-label") }}
+                {{ form.description(class="form-control", rows=3) }}
+              </div>
+              <div class="col-md-4">
+                {{ form.price.label(class="form-label") }}
+                {{ form.price(class="form-control") }}
+              </div>
+              <div class="col-md-4">
+                {{ form.stock.label(class="form-label") }}
+                {{ form.stock(class="form-control") }}
+              </div>
+              <div class="col-md-4">
+                {{ form.yarn_type.label(class="form-label") }}
+                {{ form.yarn_type(class="form-control") }}
+              </div>
+              <div class="col-md-6">
+                {{ form.size.label(class="form-label") }}
+                {{ form.size(class="form-control") }}
+              </div>
+              <div class="col-md-6">
+                {{ form.colors.label(class="form-label") }}
+                {{ form.colors(class="form-control") }}
+              </div>
+              <div class="col-12">
+                <div class="form-check form-check-inline">
+                  {{ form.is_active(class="form-check-input") }}
+                  {{ form.is_active.label(class="form-check-label") }}
+                </div>
+                <div class="form-check form-check-inline">
+                  {{ form.is_featured(class="form-check-input") }}
+                  {{ form.is_featured.label(class="form-check-label") }}
+                </div>
+              </div>
+              <div class="col-12">
+                {{ form.submit(class="btn btn-cs") }}
+                <a href="{{ url_for('admin.products') }}" class="btn btn-cs-outline ms-2">Cancel</a>
+              </div>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,9 @@
+<div class="admin-sidebar rounded-3 mb-3">
+  <a href="{{ url_for('admin.dashboard') }}" class="{% if request.endpoint == 'admin.dashboard' %}active{% endif %}">Dashboard</a>
+  <a href="{{ url_for('admin.products') }}" class="{% if 'product' in (request.endpoint or '') %}active{% endif %}">Products</a>
+  <a href="{{ url_for('admin.categories') }}" class="{% if request.endpoint == 'admin.categories' %}active{% endif %}">Categories</a>
+  <a href="{{ url_for('admin.orders') }}" class="{% if 'order' in (request.endpoint or '') %}active{% endif %}">Orders</a>
+  <a href="{{ url_for('admin.users') }}" class="{% if request.endpoint == 'admin.users' %}active{% endif %}">Users</a>
+  <hr>
+  <a href="{{ url_for('main.index') }}">← Back to shop</a>
+</div>
