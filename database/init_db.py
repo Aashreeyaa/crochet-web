@@ -116,7 +116,7 @@ def seed():
             ("Chunky Beanie", "Accessories", 650, 25,
              "Wool blend", "One size", "Terracotta, Sage", True,
              "Warm double-layered beanie with fold-over brim.",
-             "placeholder.jpg"),
+             "amigurumi-doll.jpg"),
 
             ("Market Tote Bag", "Accessories", 1250, 10,
              "Cotton rope", "Large", "Natural", False,
