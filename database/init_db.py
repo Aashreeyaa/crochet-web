@@ -1,5 +1,6 @@
 #!/usr/bin/env python3
 """Create tables and seed demo data for The Cozy Knot."""
+
 import sys
 from pathlib import Path
 
@@ -17,12 +18,17 @@ def seed():
     app = create_app()
 
     with app.app_context():
-        # Create tables if they don't exist
+
+        # =========================================
+        # CREATE TABLES
+        # =========================================
+
         db.create_all()
 
         # =========================================
         # ADMIN USER
         # =========================================
+
         admin = User.query.filter_by(
             email="admin@stitchshop.com"
         ).first()
@@ -33,12 +39,14 @@ def seed():
                 full_name="Admin Weaver",
                 role="admin"
             )
+
             admin.set_password("admin123")
             db.session.add(admin)
 
         # =========================================
         # CUSTOMER USER
         # =========================================
+
         customer = User.query.filter_by(
             email="customer@stitchshop.com"
         ).first()
@@ -51,12 +59,14 @@ def seed():
                 phone="9800000000",
                 address="Lalitpur, Nepal",
             )
+
             customer.set_password("cust123")
             db.session.add(customer)
 
         # =========================================
         # CATEGORIES
         # =========================================
+
         cats_data = [
             ("Blankets", "Cozy throws and baby blankets", "🛏️"),
             ("Amigurumi", "Cute stuffed animals & figures", "🧸"),
@@ -72,19 +82,21 @@ def seed():
             slug = slugify(name)
 
             # Check if category already exists
-            c = Category.query.filter_by(slug=slug).first()
+            category = Category.query.filter_by(
+                slug=slug
+            ).first()
 
-            if not c:
-                c = Category(
+            if not category:
+                category = Category(
                     name=name,
                     slug=slug,
                     description=desc,
                     icon=icon
                 )
 
-                db.session.add(c)
+                db.session.add(category)
 
-            categories[name] = c
+            categories[name] = category
 
         # Save categories so IDs are available
         db.session.flush()
@@ -92,67 +104,169 @@ def seed():
         # =========================================
         # PRODUCTS
         # =========================================
+
         products = [
-            ("Cloud Soft Baby Blanket", "Blankets", 2450, 12,
-             "Cotton blend", "75×90 cm", "Cream, Blush", True,
-             "Ultra-soft baby blanket worked in gentle granny squares. Perfect shower gift.",
-             "placeholder.jpg"),
 
-            ("Rainbow Granny Throw", "Blankets", 3890, 5,
-             "Acrylic", "120×150 cm", "Rainbow", True,
-             "Vibrant full-size throw. Machine washable and surprisingly light.",
-             "placeholder.jpg"),
+            (
+                "Cloud Soft Baby Blanket",
+                "Blankets",
+                2450,
+                12,
+                "Cotton blend",
+                "75×90 cm",
+                "Cream, Blush",
+                True,
+                "Ultra-soft baby blanket worked in gentle granny squares. Perfect shower gift.",
+                "baby-blankie.jpg"
+            ),
 
-            ("Lil' Bear Amigurumi", "Amigurumi", 890, 20,
-             "Cotton", "15 cm", "Honey Brown", True,
-             "Hand-crocheted bear with safety eyes. Ideal for kids 3+.",
-             "placeholder.jpg"),
+            (
+                "Rainbow Granny Throw",
+                "Blankets",
+                3890,
+                5,
+                "Acrylic",
+                "120×150 cm",
+                "Rainbow",
+                True,
+                "Vibrant full-size throw. Machine washable and surprisingly light.",
+                "granny-blankie.jpg"
+            ),
 
-            ("Sleepy Bunny", "Amigurumi", 950, 15,
-             "Cotton", "18 cm", "White, Grey", False,
-             "Floppy-eared bunny ready for bedtime cuddles.",
-             "amigurumi.jpg"),
+            (
+                "Lil' Bear Amigurumi",
+                "Amigurumi",
+                890,
+                20,
+                "Cotton",
+                "15 cm",
+                "Honey Brown",
+                True,
+                "Hand-crocheted bear with safety eyes. Ideal for kids 3+.",
+                "lil-bear.jpg"
+            ),
 
-            ("Chunky Beanie", "Accessories", 650, 25,
-             "Wool blend", "One size", "Terracotta, Sage", True,
-             "Warm double-layered beanie with fold-over brim.",
-             "amigurumi-doll.jpg"),
+            (
+                "Sleepy Bunny",
+                "Amigurumi",
+                950,
+                15,
+                "Cotton",
+                "18 cm",
+                "White, Grey",
+                False,
+                "Floppy-eared bunny ready for bedtime cuddles.",
+                "sleepy-bunny.jpg"
+            ),
 
-            ("Market Tote Bag", "Accessories", 1250, 10,
-             "Cotton rope", "Large", "Natural", False,
-             "Sturdy crochet tote that holds a full market haul.",
-             "placeholder.jpg"),
+            (
+                "Chunky Beanie",
+                "Accessories",
+                650,
+                25,
+                "Wool blend",
+                "One size",
+                "Terracotta, Sage",
+                True,
+                "Warm double-layered beanie with fold-over brim.",
+                "chunkie-beanie.jpg"
+            ),
 
-            ("Macrame-Style Plant Hanger", "Home Decor", 780, 18,
-             "Cotton cord", "90 cm drop", "Natural, Black", True,
-             "Boho plant hanger for medium pots. Knot-free crochet version.",
-             "placeholder.jpg"),
+            (
+                "Market Tote Bag",
+                "Accessories",
+                1250,
+                10,
+                "Cotton rope",
+                "Large",
+                "Natural",
+                False,
+                "Sturdy crochet tote that holds a full market haul.",
+                "tote-bag.jpg"
+            ),
 
-            ("Hexagon Coaster Set", "Home Decor", 450, 30,
-             "Cotton", "10 cm", "Mixed pastels", False,
-             "Set of 4 hexagon coasters. Protects tables in style.",
-             "placeholder.jpg"),
+            (
+                "Macrame-Style Plant Hanger",
+                "Home Decor",
+                780,
+                18,
+                "Cotton cord",
+                "90 cm drop",
+                "Natural, Black",
+                True,
+                "Boho plant hanger for medium pots. Knot-free crochet version.",
+                "macrame-hanger.jpg"
+            ),
 
-            ("Newborn Booties", "Baby Items", 520, 22,
-             "Bamboo yarn", "0–3 months", "Mint, Peach", True,
-             "Soft non-slip booties. Gentle on newborn skin.",
-             "placeholder.jpg"),
+            (
+                "Hexagon Coaster Set",
+                "Home Decor",
+                450,
+                30,
+                "Cotton",
+                "10 cm",
+                "Mixed pastels",
+                False,
+                "Set of 4 hexagon coasters. Protects tables in style.",
+                "hexagon-set.jpg"
+            ),
 
-            ("Baby Bonnet", "Baby Items", 680, 14,
-             "Cotton", "0–6 months", "Ivory", False,
-             "Classic lace-edge bonnet with chin ties.",
-             "placeholder.jpg"),
+            (
+                "Newborn Booties",
+                "Baby Items",
+                520,
+                22,
+                "Bamboo yarn",
+                "0–3 months",
+                "Mint, Peach",
+                True,
+                "Soft non-slip booties. Gentle on newborn skin.",
+                "newborn-bootie.jpg"
+            ),
 
-            ("Heart Cushion Cover", "Home Decor", 1100, 8,
-             "Chenille", "40×40 cm", "Dusty Rose", True,
-             "Plush heart-shaped pillow cover. Insert not included.",
-             "image.jpg"),
+            (
+                "Baby Bonnet",
+                "Baby Items",
+                680,
+                14,
+                "Cotton",
+                "0–6 months",
+                "Ivory",
+                False,
+                "Classic lace-edge bonnet with chin ties.",
+                "bonnet.jpg"
+            ),
 
-            ("Fingerless Gloves", "Accessories", 720, 16,
-             "Merino", "One size", "Charcoal", False,
-             "Warm gloves that keep fingertips free for typing or crafting.",
-             "placeholder.jpg"),
+            (
+                "Heart Cushion Cover",
+                "Home Decor",
+                1100,
+                8,
+                "Chenille",
+                "40×40 cm",
+                "Dusty Rose",
+                True,
+                "Plush heart-shaped pillow cover. Insert not included.",
+                "heart-cushion.jpg"
+            ),
+
+            (
+                "Fingerless Gloves",
+                "Accessories",
+                720,
+                16,
+                "Merino",
+                "One size",
+                "Charcoal",
+                False,
+                "Warm gloves that keep fingertips free for typing or crafting.",
+                "fingerless-gloves.jpg"
+            ),
         ]
+
+        # =========================================
+        # ADD / UPDATE PRODUCTS
+        # =========================================
 
         for (
             name,
@@ -169,14 +283,39 @@ def seed():
 
             product_slug = slugify(name)
 
-            # Check if product already exists
+            # Find existing product
             existing_product = Product.query.filter_by(
                 slug=product_slug
             ).first()
 
-            if not existing_product:
+            if existing_product:
 
-                p = Product(
+                # =====================================
+                # UPDATE EXISTING PRODUCT
+                # =====================================
+
+                existing_product.name = name
+                existing_product.description = desc
+                existing_product.price = price
+                existing_product.stock = stock
+                existing_product.yarn_type = yarn
+                existing_product.size = size
+                existing_product.colors = colors
+                existing_product.is_featured = featured
+                existing_product.is_active = True
+                existing_product.category_id = categories[cat_name].id
+
+                # IMPORTANT:
+                # Update image filename
+                existing_product.image = image
+
+            else:
+
+                # =====================================
+                # CREATE NEW PRODUCT
+                # =====================================
+
+                new_product = Product(
                     name=name,
                     slug=product_slug,
                     description=desc,
@@ -191,19 +330,25 @@ def seed():
                     image=image,
                 )
 
-                db.session.add(p)
+                db.session.add(new_product)
 
         # =========================================
-        # SAVE
+        # SAVE DATABASE
         # =========================================
+
         db.session.commit()
 
-        print("Database initialized safely.")
-        print("Existing data was preserved.")
-        print("Missing demo data was added.")
+        print()
+        print("=========================================")
+        print(" Database initialized successfully!")
+        print("=========================================")
+        print("Existing products were updated.")
+        print("Missing products were added.")
+        print("Image filenames were updated.")
         print()
         print("Admin   : admin@stitchshop.com / admin123")
         print("Customer: customer@stitchshop.com / cust123")
+        print()
 
 
 if __name__ == "__main__":
