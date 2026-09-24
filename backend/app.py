@@ -1,4 +1,7 @@
 from flask import Flask
+from dotenv import load_dotenv
+import os
+load_dotenv()
 from backend.config import Config
 from backend.extensions import db, login_manager, csrf
 
