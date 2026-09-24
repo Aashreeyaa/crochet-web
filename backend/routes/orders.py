@@ -93,6 +93,10 @@ def generate_esewa_signature(
 # Checkout Form
 # =========================================================
 
+# =========================================================
+# Checkout Form
+# =========================================================
+
 class CheckoutForm(FlaskForm):
 
     shipping_name = StringField(
@@ -115,8 +119,24 @@ class CheckoutForm(FlaskForm):
         "Shipping Address",
         validators=[
             DataRequired(),
-            Length(10, 500)
+            Length(1, 500)
         ]
+    )
+
+    postal_code = SelectField(
+        "Postal Code",
+        choices=[
+            ("44600", "44600 - Kathmandu"),
+            ("44700", "44700 - Lalitpur"),
+            ("44800", "44800 - Bhaktapur"),
+            ("44200", "44200 - Chitwan"),
+            ("33700", "33700 - Pokhara"),
+            ("32900", "32900 - Butwal"),
+            ("21900", "21900 - Biratnagar"),
+            ("11800", "11800 - Birgunj"),
+            ("57300", "57300 - Dharan"),
+        ],
+        validators=[DataRequired()]
     )
 
     payment_method = SelectField(
@@ -129,7 +149,7 @@ class CheckoutForm(FlaskForm):
         ],
         validators=[
             DataRequired()
-        ],
+        ]
     )
 
     notes = TextAreaField(
@@ -139,7 +159,6 @@ class CheckoutForm(FlaskForm):
     submit = SubmitField(
         "Place Order & Pay"
     )
-
 
 # =========================================================
 # Generate Order Number
@@ -254,6 +273,8 @@ def checkout():
             shipping_phone=form.shipping_phone.data.strip(),
 
             shipping_address=form.shipping_address.data.strip(),
+
+            postal_code=form.postal_code.data,
 
             subtotal=subtotal,
 
@@ -811,6 +832,13 @@ def esewa_success():
     # -----------------------------------------------------
 
     db.session.commit()
+
+    from backend.email_utils import send_invoice_email
+
+    try:
+        send_invoice_email(order)
+    except Exception as e:
+        print("Invoice email failed:", e)
 
     flash(
         "eSewa payment successful!",

@@ -1,18 +1,35 @@
 from flask import Flask
 from dotenv import load_dotenv
 import os
+
 load_dotenv()
+
 from backend.config import Config
 from backend.extensions import db, login_manager, csrf
+from flask_mail import Mail
+
+
+mail = Mail()
 
 
 def create_app(config_class=Config):
+
     app = Flask(
         __name__,
         template_folder="templates",
         static_folder="static",
     )
+
     app.config.from_object(config_class)
+
+    # Email configuration
+    app.config["MAIL_SERVER"] = "smtp.gmail.com"
+    app.config["MAIL_PORT"] = 587
+    app.config["MAIL_USE_TLS"] = True
+    app.config["MAIL_USERNAME"] = "projects.test.here@gmail.com"
+    app.config["MAIL_PASSWORD"] = "hsrj ihck besk ecek"
+
+    mail.init_app(app)
 
     db.init_app(app)
     login_manager.init_app(app)
@@ -36,21 +53,35 @@ def create_app(config_class=Config):
     # Context processors
     @app.context_processor
     def inject_globals():
+
         from flask_login import current_user
+
         cart_count = 0
+
         if current_user.is_authenticated:
             cart_count = current_user.cart_items.count()
-        return {"cart_count": cart_count}
+
+        return {
+            "cart_count": cart_count
+        }
 
     # Error handlers
     @app.errorhandler(404)
     def not_found(e):
+
         from flask import render_template
-        return render_template("errors/404.html"), 404
+
+        return render_template(
+            "errors/404.html"
+        ), 404
 
     @app.errorhandler(403)
     def forbidden(e):
+
         from flask import render_template
-        return render_template("errors/403.html"), 403
+
+        return render_template(
+            "errors/403.html"
+        ), 403
 
     return app

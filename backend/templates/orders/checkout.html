@@ -1,70 +1,239 @@
 {% extends "base.html" %}
+
 {% block title %}Checkout – The Cozy Knot{% endblock %}
+
 {% block content %}
+
 <div class="container py-4">
+
   <h1 class="section-title mb-4">Checkout</h1>
+
   <div class="row g-4">
+
+    <!-- LEFT SIDE: CHECKOUT FORM -->
     <div class="col-lg-7">
-      <div class="card border-0 shadow-sm" style="border-radius:var(--cs-radius);">
+
+      <div class="card border-0 shadow-sm"
+           style="border-radius:var(--cs-radius);">
+
         <div class="card-body p-4">
-          <h5 class="fw-bold mb-3">Shipping & payment</h5>
+
+          <h5 class="fw-bold mb-3">
+            Shipping & payment
+          </h5>
+
           <form method="post">
+
             {{ form.hidden_tag() }}
+
+            <!-- SHIPPING NAME -->
             <div class="mb-3">
+
               {{ form.shipping_name.label(class="form-label") }}
+
               {{ form.shipping_name(class="form-control") }}
-              {% for e in form.shipping_name.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+
+              {% for e in form.shipping_name.errors %}
+                <div class="text-danger small">
+                  {{ e }}
+                </div>
+              {% endfor %}
+
             </div>
+
+
+            <!-- PHONE -->
             <div class="mb-3">
+
               {{ form.shipping_phone.label(class="form-label") }}
+
               {{ form.shipping_phone(class="form-control") }}
-              {% for e in form.shipping_phone.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+
+              {% for e in form.shipping_phone.errors %}
+                <div class="text-danger small">
+                  {{ e }}
+                </div>
+              {% endfor %}
+
             </div>
+
+
+            <!-- SHIPPING ADDRESS -->
             <div class="mb-3">
+
               {{ form.shipping_address.label(class="form-label") }}
-              {{ form.shipping_address(class="form-control", rows=3) }}
-              {% for e in form.shipping_address.errors %}<div class="text-danger small">{{ e }}</div>{% endfor %}
+
+              {{ form.shipping_address(
+                  class="form-control",
+                  rows=3
+              ) }}
+
+              {% for e in form.shipping_address.errors %}
+                <div class="text-danger small">
+                  {{ e }}
+                </div>
+              {% endfor %}
+
             </div>
+
+
+            <!-- POSTAL CODE -->
             <div class="mb-3">
+
+              {{ form.postal_code.label(class="form-label") }}
+
+              {{ form.postal_code(class="form-select") }}
+
+              {% for e in form.postal_code.errors %}
+                <div class="text-danger small">
+                  {{ e }}
+                </div>
+              {% endfor %}
+
+            </div>
+
+
+            <!-- PAYMENT METHOD -->
+            <div class="mb-3">
+
               {{ form.payment_method.label(class="form-label") }}
+
               {{ form.payment_method(class="form-select") }}
+
             </div>
+
+
+            <!-- NOTES -->
             <div class="mb-4">
+
               {{ form.notes.label(class="form-label") }}
-              {{ form.notes(class="form-control", rows=2) }}
+
+              {{ form.notes(
+                  class="form-control",
+                  rows=2
+              ) }}
+
             </div>
-            {{ form.submit(class="btn btn-cs w-100") }}
+
+
+            <!-- SUBMIT BUTTON -->
+            {{ form.submit(
+                class="btn btn-cs w-100"
+            ) }}
+
           </form>
+
         </div>
       </div>
+
     </div>
+
+
+    <!-- RIGHT SIDE: ORDER SUMMARY -->
     <div class="col-lg-5">
-      <div class="card border-0 shadow-sm sticky-top" style="border-radius:var(--cs-radius);top:90px;">
+
+      <div class="card border-0 shadow-sm sticky-top"
+           style="border-radius:var(--cs-radius);top:90px;">
+
         <div class="card-body p-4">
-          <h5 class="fw-bold mb-3">Order summary</h5>
+
+          <h5 class="fw-bold mb-3">
+            Order summary
+          </h5>
+
+
+          <!-- PRODUCTS -->
           {% for item in items %}
+
           <div class="d-flex justify-content-between small mb-2">
-            <span>{{ item.product.name }} × {{ item.quantity }}</span>
-            <span>Rs {{ '%.0f'|format(item.subtotal) }}</span>
+
+            <span>
+              {{ item.product.name }}
+              ×
+              {{ item.quantity }}
+            </span>
+
+            <span>
+              Rs {{ '%.0f'|format(item.subtotal) }}
+            </span>
+
           </div>
+
           {% endfor %}
+
+
           <hr>
+
+
+          <!-- SUBTOTAL -->
           <div class="d-flex justify-content-between mb-1">
-            <span class="text-muted">Subtotal</span>
-            <span>Rs {{ '%.0f'|format(subtotal) }}</span>
+
+            <span class="text-muted">
+              Subtotal
+            </span>
+
+            <span>
+              Rs {{ '%.0f'|format(subtotal) }}
+            </span>
+
           </div>
+
+
+          <!-- SHIPPING -->
           <div class="d-flex justify-content-between mb-2">
-            <span class="text-muted">Shipping</span>
-            <span>{% if shipping_fee == 0 %}Free{% else %}Rs {{ '%.0f'|format(shipping_fee) }}{% endif %}</span>
+
+            <span class="text-muted">
+              Shipping
+            </span>
+
+            <span>
+
+              {% if shipping_fee == 0 %}
+
+                Free
+
+              {% else %}
+
+                Rs {{ '%.0f'|format(shipping_fee) }}
+
+              {% endif %}
+
+            </span>
+
           </div>
+
+
+          <!-- TOTAL -->
           <div class="d-flex justify-content-between fw-bold fs-5">
-            <span>Total</span>
-            <span style="color:var(--cs-primary-2);">Rs {{ '%.0f'|format(total) }}</span>
+
+            <span>
+              Total
+            </span>
+
+            <span style="color:var(--cs-primary-2);">
+
+              Rs {{ '%.0f'|format(total) }}
+
+            </span>
+
           </div>
-          <p class="small text-muted mt-2 mb-0">Free shipping on orders over Rs 1,500</p>
+
+
+          <!-- SHIPPING MESSAGE -->
+          <p class="small text-muted mt-2 mb-0">
+
+            Free shipping on orders over Rs 1,500
+
+          </p>
+
         </div>
+
       </div>
+
     </div>
+
   </div>
+
 </div>
+
 {% endblock %}
