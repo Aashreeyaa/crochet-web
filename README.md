@@ -2,7 +2,7 @@
 
 Full-stack **crochet e-commerce** web application built with **Flask**, mapped 1:1 to the provided **Use Case Diagram**.
 
-Designed as a clean, reactive, undergraduate Software Engineering project — unique soft-yarn aesthetic (not a copy of the sneaker reference).
+Designed as a clean, reactive, undergraduate Software Engineering project — unique soft-yarn aesthetic.
 
 ## Features (mapped to Use Cases)
 
