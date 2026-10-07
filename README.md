@@ -74,9 +74,9 @@ Open **http://127.0.0.1:5000**
 | Admin    | admin@stitchshop.com      | admin123  |
 | Customer | customer@stitchshop.com   | cust123   |
 
-## Design Notes (vs Sneaky Point reference)
+## Design Notes 
 
-- Completely new visual language: warm cream + terracotta + dusty rose (yarn aesthetic) instead of dark/orange sneakers.
+- Visual language: warm cream + terracotta + dusty rose (yarn aesthetic)
 - Domain models adapted for crochet (yarn type, size, colors, categories like Amigurumi / Blankets).
 - Same solid Flask patterns (blueprints, application factory, CSRF, RBAC) but unique flows and UI.
 - Reactive touches: cart badge, quantity steppers, sticky checkout summary, status pills, print-ready invoice.
